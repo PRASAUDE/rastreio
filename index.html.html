@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador WhatsApp - ACELERA FIT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #4A0E4E 0%, #2D1B69 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4A0E4E 0%, #2D1B69 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .green-bars {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin: 12px 0;
+        }
+
+        .bar {
+            width: 80px;
+            height: 12px;
+            background: #7ED321;
+            border-radius: 2px;
+            transform: skew(-20deg);
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .acelera-text {
+            font-size: 3.2rem;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
+        }
+
+        .fit-text {
+            font-size: 3.2rem;
+            font-weight: bold;
+            letter-spacing: 4px;
+            margin-top: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-top: 10px;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 40px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #4A0E4E;
+            font-size: 1.1rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #7ED321;
+            box-shadow: 0 0 8px rgba(126, 211, 33, 0.3);
+        }
+
+        .generate-button {
+            background: linear-gradient(135deg, #7ED321, #6CBE1A);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            margin: 20px 0;
+            transition: transform 0.3s;
+        }
+
+        .generate-button:hover {
+            transform: translateY(-2px);
+        }
+
+        .result-section {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .message-preview {
+            background: linear-gradient(135deg, #E8D5F2 0%, #D4C4E6 100%) !important;
+            color: #333 !important;
+            padding: 25px;
+            border-radius: 15px;
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            white-space: pre-line;
+            border: 3px solid #9B70B7 !important;
+            box-shadow: 0 8px 25px rgba(155, 112, 183, 0.4);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .copy-btn, .whatsapp-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        .copy-btn {
+            background: #4A0E4E;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background: #2D1B69;
+            transform: scale(1.02);
+        }
+
+        .whatsapp-btn {
+            background: #7ED321;
+            color: white;
+        }
+
+        .whatsapp-btn:hover {
+            background: #6CBE1A;
+            transform: scale(1.02);
+        }
+
+        .success-alert {
+            background: #d4edda;
+            color: #155724;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border-left: 4px solid #7ED321;
+        }
+
+        .phone-input {
+            position: relative;
+        }
+
+        .phone-prefix {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-weight: bold;
+        }
+
+        .phone-input input {
+            padding-left: 60px;
+        }
+
+        @media (max-width: 600px) {
+            .form-container {
+                padding: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .acelera-text, .fit-text {
+                font-size: 2.2rem;
+                letter-spacing: 2px;
+            }
+
+            .bar {
+                width: 60px;
+                height: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo-container">
+                <div class="acelera-text">ACELERA</div>
+                <div class="green-bars">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+                <div class="fit-text">FIT</div>
+            </div>
+            <div class="subtitle">Gerador de Mensagens WhatsApp</div>
+        </div>
+
+        <div class="form-container">
+            <div class="instructions">
+                <h3>📋 Instruções:</h3>
+                <p><strong>1.</strong> Digite o nome do cliente<br>
+                <strong>2.</strong> Insira o WhatsApp do cliente<br>
+                <strong>3.</strong> Digite o código de rastreio<br>
+                <strong>4.</strong> Clique em "Gerar Mensagem"<br>
+                <strong>5.</strong> Envie direto para o cliente!</p>
+            </div>
+
+            <div class="input-group">
+                <label>👤 Nome do Cliente:</label>
+                <input type="text" id="nomeCliente" placeholder="Ex: Maria Silva">
+            </div>
+
+            <div class="input-group">
+                <label>📱 WhatsApp do Cliente:</label>
+                <div class="phone-input">
+                    <span class="phone-prefix">+55</span>
+                    <input type="text" id="whatsappCliente" placeholder="11999999999" maxlength="11">
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>📦 Código de Rastreio:</label>
+                <input type="text" id="codigoRastreio" placeholder="Ex: AB476318934BR">
+            </div>
+
+            <button class="generate-button" onclick="gerarMensagem()">
+                🚀 GERAR MENSAGEM
+            </button>
+
+            <div class="result-section" id="resultSection">
+                <h3 style="color: #4A0E4E; margin-bottom: 15px;">📱 Mensagem Gerada:</h3>
+                <div class="message-preview" id="mensagemPreview"></div>
+                
+                <div class="action-buttons">
+                    <button class="copy-btn" onclick="copiarMensagem()">
+                        📋 COPIAR MENSAGEM
+                    </button>
+                    <a class="whatsapp-btn" id="linkWhatsApp" href="#" target="_blank">
+                        📱 ENVIAR PARA CLIENTE
+                    </a>
+                </div>
+
+                <div class="success-alert" id="alertaSucesso">
+                    ✅ Mensagem copiada com sucesso!
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let mensagemCompleta = '';
+
+        function gerarMensagem() {
+            const nome = document.getElementById('nomeCliente').value.trim();
+            const whatsapp = document.getElementById('whatsappCliente').value.trim();
+            const codigo = document.getElementById('codigoRastreio').value.trim();
+
+            if (!nome) {
+                alert('❌ Por favor, digite o nome do cliente!');
+                document.getElementById('nomeCliente').focus();
+                return;
+            }
+
+            if (!whatsapp) {
+                alert('❌ Por favor, digite o WhatsApp do cliente!');
+                document.getElementById('whatsappCliente').focus();
+                return;
+            }
+
+            if (!codigo) {
+                alert('❌ Por favor, digite o código de rastreio!');
+                document.getElementById('codigoRastreio').focus();
+                return;
+            }
+
+            // Validar e formatar número
+            const numeroLimpo = whatsapp.replace(/\D/g, '');
+            if (numeroLimpo.length !== 11) {
+                alert('❌ Digite um WhatsApp válido com DDD (11 números)!\nExemplo: 11999999999');
+                document.getElementById('whatsappCliente').focus();
+                return;
+            }
+
+            // Gerar a mensagem
+            mensagemCompleta = `🌱 **ACELERA FIT informa:**
+
+Olá, **${nome}**! 🚀 Seu pedido **ACELERA FIT + KIT PLANNER** já foi enviado!
+
+🔑 **Código de rastreio:** ${codigo.replace(/\s/g, '')}
+👉 Acompanhe sua entrega aqui: https://rastreamento.correios.com.br
+
+✨ Este kit foi pensado para você ganhar **energia, foco e organização** no dia a dia.
+
+📞 Qualquer dúvida, fale com nossa equipe:
+📧 **sac@prasaude.com.br**
+📱 **(19) 97172-3858**
+
+Obrigado por confiar na **ACELERA FIT**. Seu próximo nível já está a caminho! 💚`;
+
+            // Mostrar a mensagem
+            document.getElementById('mensagemPreview').textContent = mensagemCompleta;
+            document.getElementById('resultSection').style.display = 'block';
+
+            // Configurar link do WhatsApp direto para o cliente
+            const mensagemWhatsApp = encodeURIComponent(mensagemCompleta);
+            document.getElementById('linkWhatsApp').href = `https://wa.me/55${numeroLimpo}?text=${mensagemWhatsApp}`;
+
+            // Scroll suave para o resultado
+            document.getElementById('resultSection').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        function copiarCodigo(codigo) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(codigo).then(function() {
+                    mostrarFeedbackCodigo('📋 Código copiado!');
+                }).catch(function() {
+                    copiarCodigoFallback(codigo);
+                });
+            } else {
+                copiarCodigoFallback(codigo);
+            }
+        }
+
+        function copiarCodigoFallback(codigo) {
+            const textarea = document.createElement('textarea');
+            textarea.value = codigo;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            mostrarFeedbackCodigo('📋 Código copiado!');
+        }
+
+        function mostrarFeedbackCodigo(mensagem) {
+            // Criar tooltip se não existir
+            let tooltip = document.getElementById('codigo-tooltip');
+            if (!tooltip) {
+                tooltip = document.createElement('div');
+                tooltip.id = 'codigo-tooltip';
+                tooltip.className = 'copy-tooltip';
+                document.body.appendChild(tooltip);
+            }
+
+            tooltip.textContent = mensagem;
+            tooltip.style.opacity = '1';
+            tooltip.style.left = '50%';
+            tooltip.style.top = '50%';
+            tooltip.style.transform = 'translate(-50%, -50%)';
+
+            setTimeout(() => {
+                tooltip.style.opacity = '0';
+            }, 2000);
+        }
+
+        function copiarMensagem() {
+            if (!mensagemCompleta) {
+                alert('❌ Primeiro gere uma mensagem!');
+                return;
+            }
+
+            // Tentar copiar usando a API moderna
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(mensagemCompleta).then(function() {
+                    mostrarSucesso();
+                }).catch(function() {
+                    copiarFallback();
+                });
+            } else {
+                copiarFallback();
+            }
+        }
+
+        function copiarFallback() {
+            const textarea = document.createElement('textarea');
+            textarea.value = mensagemCompleta;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            mostrarSucesso();
+        }
+
+        function mostrarSucesso() {
+            const alerta = document.getElementById('alertaSucesso');
+            alerta.style.display = 'block';
+            setTimeout(function() {
+                alerta.style.display = 'none';
+            }, 3000);
+        }
+
+        // Formatação automática do WhatsApp
+        document.getElementById('whatsappCliente').addEventListener('input', function(e) {
+            let valor = e.target.value.replace(/\D/g, '');
+            if (valor.length > 11) valor = valor.slice(0, 11);
+            e.target.value = valor;
+        });
+
+        // Permitir Enter para navegar pelos campos
+        document.getElementById('nomeCliente').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('whatsappCliente').focus();
+            }
+        });
+
+        document.getElementById('whatsappCliente').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('codigoRastreio').focus();
+            }
+        });
+
+        document.getElementById('codigoRastreio').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                gerarMensagem();
+            }
+        });
+
+        // Limpar alerta quando começar a digitar
+        document.getElementById('nomeCliente').addEventListener('input', function() {
+            document.getElementById('alertaSucesso').style.display = 'none';
+        });
+
+        document.getElementById('whatsappCliente').addEventListener('input', function() {
+            document.getElementById('alertaSucesso').style.display = 'none';
+        });
+
+        document.getElementById('codigoRastreio').addEventListener('input', function() {
+            document.getElementById('alertaSucesso').style.display = 'none';
+        });
+    </script>
+</body>
+</html>
